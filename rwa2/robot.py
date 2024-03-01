@@ -1,11 +1,14 @@
 """
 This module contains the functions that control the robot's movement.
 """
+
 # import size of maze from maze so that code knows boandaries of maze
 from maze import MAZE_SIZE # type: ignore
 # initial pos and orient of robot
-robot_position = [2, 3]  # [row, column]
-robot_orientation = 'up'
+
+
+# print('robot position is', robot_position,'\nrobot orientation is', robot_orientation)
+
 
 
 def move_forward(robot_position, robot_orientation):
