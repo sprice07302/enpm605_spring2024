@@ -19,18 +19,15 @@ HORIZONTAL_WALL = "──"
 VERTICAL_WALL = "│"
 CORNER = "┼"
 
-#moved MAZE_SIZE to robot.py
 # Define the size of the maze
 MAZE_SIZE = 4
 
 # Define the maze as a 2D list
-maze = [[EMPTY] * MAZE_SIZE for _ in range(MAZE_SIZE)]
+maze=list()
+for _ in range(MAZE_SIZE):
+    maze.append( [EMPTY] * MAZE_SIZE )
+
 # Rewrite the previous line using for loops
-
-#decided to move robot position to robot.py
-
-# Define the obstacles' positions
-obstacle_positions = [[1, 1], [2, 2], [3, 3]]
 
 
 #have to make sure robot will be randomized and not placed over obstacles or goal
@@ -48,10 +45,6 @@ for x in cell_nums:
 
 # delete counters from previous loop
 del x, i
-
-# remove positions of obstacles from the all maze position list
-for x in range(len(obstacle_positions)):
-    all_maze_pos.remove(obstacle_positions[x])
   
 # define and randomize goal position
 goal_position = random.choice(all_maze_pos)
@@ -59,18 +52,77 @@ goal_position = random.choice(all_maze_pos)
 # remove position of goal from the all maze position list
 all_maze_pos.remove(goal_position)
 
-# Place obstacles, the robot, and the goal in the maze
-for obstacle in obstacle_positions:
-    maze[obstacle[0]][obstacle[1]] = OBSTACLE
-
 # orientations_poss is a list of all possible orientations of robot
 orientations_poss = ['up', 'down', 'left', 'right']
 
 # randomizes robots position from all maze position list
 robot_position = random.choice(all_maze_pos)
 
+#removes robots position from maze position list
+all_maze_pos.remove(robot_position)
+
 # randomizes robot orientation using orientation_pos
 robot_orientation = random.choice(orientations_poss)
+
+"""
+based on the geometry of the maze the robot will not get trapped by obstacles 
+so long as the obstacles are not heavily around the perimeter (outside) of the maze,
+since there are only 3 obstacles the outer wall would have to be obstructing the robot
+for the robot to be blocked in 4 directions
+
+therefore if you can create a normal distrubution with the same center of the maze (2.5)
+with a low standard deviation, then randomly select numbers from that distrubution, 
+the numbers selected will almost always be toward the center of the maze.
+
+It would be virtually impossible for all 3 obstacles to be along or near the perimeter,
+therefore the robot would not be trapped
+"""
+
+#randomize obstacles based on normal distribution of numbers 
+# where the mean is the center of maze
+maze_distr=list()
+num_of_obstacles=3
+for x in range(num_of_obstacles):
+    
+    # random normal distrubution with a mean equal to half the maze size and SD = 0.5
+    norm1=round(random.normalvariate(float(MAZE_SIZE-1)/2,0.5))
+    norm2=round(random.normalvariate(float(MAZE_SIZE-1)/2,0.5))
+    # add the distrubution to the list variable
+    maze_distr.append([norm1,norm2])
+    
+    # maze_distr_match checks if there is a match between the distribution number
+    #selected and the open spaces left in the maze
+    maze_distr_match=False
+    #loops until there is a match
+    while maze_distr_match is False:
+        # cycles through all empty spaces until match is found
+        for i in range(len(all_maze_pos)):
+            if maze_distr[x] == all_maze_pos[i]:
+                maze_distr_match = True
+                #remove the match from the list of empty spaces
+                all_maze_pos.remove(maze_distr[x])
+                break
+        # no match found
+        if maze_distr_match is False:
+            # remove the distrubution number and re-generate it
+            maze_distr.pop(x)
+            # random normal distrubution with a mean equal to half the maze size and SD = 0.5
+            norm1=round(random.normalvariate(float(MAZE_SIZE-1)/2,0.5))
+            norm2=round(random.normalvariate(float(MAZE_SIZE-1)/2,0.5))
+            # using normal distribution create a list of 6 numbers to be coords for obstacles
+            maze_distr.append([norm1,norm2])
+                 
+# obstacles placed 
+o1=maze_distr[0]
+o2=maze_distr[1]
+o3=maze_distr[2]
+obstacle_positions = [o1, o2, o3]
+
+
+
+# Place obstacles, the robot, and the goal in the maze
+for obstacle in obstacle_positions:
+    maze[obstacle[0]][obstacle[1]] = OBSTACLE
 
 # place goal emoji
 maze[goal_position[0]][goal_position[1]] = GOAL

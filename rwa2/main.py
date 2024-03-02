@@ -1,5 +1,7 @@
 """
-This is the main file which contains the entry point of your program.
+This is the main program which communicates directly with the other modules,
+this module takes the input keys from the user and activates the functions
+from both the robot and maze modules
 """
 #import functions
 from maze import print_maze # type: ignore
@@ -42,7 +44,11 @@ def main(robot_position, robot_orientation):
 
         # Ctrl-c to stop the program
         #sends current iteration of robot position and orientation to maze function
-        terminate=print_maze(robot_position, robot_orientation)
+        try: 
+            terminate=print_maze(robot_position, robot_orientation)
+        except:
+            print('error please try again...')
+            
         if terminate is True:
             break
         

@@ -1,15 +1,11 @@
 """
-This module contains the functions that control the robot's movement.
+This module controls the robots movement, it also is responsible for 
+ensuring the robot cannot move out of the bounds of the maze. 
+The robot_position and robot_orientation variables are updated here
 """
 
 # import size of maze from maze so that code knows boandaries of maze
 from maze import MAZE_SIZE # type: ignore
-# initial pos and orient of robot
-
-
-# print('robot position is', robot_position,'\nrobot orientation is', robot_orientation)
-
-
 
 def move_forward(robot_position, robot_orientation):
 
@@ -27,7 +23,6 @@ def move_forward(robot_position, robot_orientation):
     elif robot_orientation == 'up':
         #updates row by moving robot toward 0th row
         robot_position[0]=robot_position[0]-1
-        print(robot_position) 
     elif robot_orientation == 'down':
         #updates row by moving toward highest row
         robot_position[0]=robot_position[0]+1  
@@ -55,7 +50,6 @@ def move_backward(robot_position, robot_orientation):
     elif robot_orientation == 'down':
         #updates row by moving robot toward 0th row
         robot_position[0]=robot_position[0]-1
-        print(robot_position)
     elif robot_orientation == 'up':
         #updates row by moving toward highest row
         robot_position[0]=robot_position[0]+1
