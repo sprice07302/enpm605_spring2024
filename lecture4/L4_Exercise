@@ -1,0 +1,48 @@
+
+
+def sum_of_digits_recursive(i_number):
+    # if input value is int
+    if isinstance(i_number,int) is True:
+        #convert to string
+        i_number=str(i_number)
+        # convert to list
+        i_number=list(i_number)
+        # number of digits
+        num_of_digits=len(i_number)
+        #convert to list of ints
+        for num in range(num_of_digits):
+            i_number[num]=int(i_number[num])
+            
+    #if input is already list 
+    elif isinstance(i_number, list) is True and isinstance(i_number[0], int) is True:
+        # number of digits
+        num_of_digits=len(i_number)
+        
+    else:
+        print('INT ONLY')   
+        return   
+         
+    # returns final number
+    if num_of_digits ==1:
+        return int(i_number[0])
+    
+    else:
+        # removing last number from num_of_digits for inuitive indexing
+        num_of_digits=num_of_digits-1
+        
+        # sum last 2 digits in list
+        sum_last_2 = i_number[num_of_digits-1] \
+            + int(i_number[num_of_digits])
+            
+        # combine the sum of last 2 with remaining previous numbers left
+        i_number = i_number[:num_of_digits-1] + [sum_last_2]
+        
+        # sends list of new number back trhough function until 1 final number is left
+        return  sum_of_digits_recursive(i_number)
+
+    
+input=456
+
+sum_of_digits= sum_of_digits_recursive(input)
+
+print('sum of digits from', input, 'is', sum_of_digits)
