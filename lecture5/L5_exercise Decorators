@@ -1,0 +1,46 @@
+"""
+exercise 1
+"""
+def strong(original_function):
+    def wrap_strong():
+        strong='<strong>'
+        consolidate= strong + original_function() + strong
+        return consolidate
+    return wrap_strong
+
+def emphasis(original_function):
+    def wrap_emphasis():
+        emphasis='<em>'
+        consolidate = emphasis + original_function() + emphasis
+        return consolidate
+    return wrap_emphasis
+@strong
+@emphasis
+def greet():
+    return 'Hello'
+print(greet()) # <strong><em>Hello<em><strong>
+
+"""
+exercise 2
+"""
+del()
+def count_calls(original_function):
+    def call_counter():
+        global n
+        try:
+            n=n+1
+        except NameError: 
+            n=1
+        print('call '+ str(n) + ' of '+ '\'' + original_function.__name__ + '\'')
+        original_function()
+        return n
+    return call_counter
+
+
+@count_calls # type: ignore
+def greet():
+    print('Hello')
+greet() # call 1 of 'greet'
+# Hello
+greet() # call 2 of 'greet'
+# Hello
