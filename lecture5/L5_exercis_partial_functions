@@ -1,0 +1,11 @@
+# Write a partial function using the provided definition of subtract.
+# � Do not modify the definition of subtract
+# � The partial function fixes the value of y to 3.
+from functools import partial
+
+def subtract(x, y):
+    return x - y
+less = partial(subtract,y=3) # write your code here
+print(less(7)) # 4
+print(less(12)) # 9
+print(less(20)) # 17
