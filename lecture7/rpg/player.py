@@ -258,6 +258,8 @@ class Player:
 if __name__ == "__main__":
     name = "Joe"
     print(Player.is_valid_player_name(name))  # False
+    player1 = Player()
+    print(player1.name)
     name = "Jack"
     print(Player.is_valid_player_name(name))  # True
 
